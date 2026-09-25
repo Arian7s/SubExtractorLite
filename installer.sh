@@ -63,20 +63,16 @@ get_latest_version() {
     echo "$latest"
 }
 
-reboot_device() {
-    echo "[+] Rebooting device in 5 seconds..."
+restart_enigma2() {
+    echo "[+] Restarting Enigma2 in 5 seconds..."
     sleep 5
 
     if command_exists systemctl; then
-        systemctl reboot
-    elif command_exists reboot; then
-        reboot
-    elif [ -x /sbin/reboot ]; then
-        /sbin/reboot
-    elif [ -x /usr/sbin/reboot ]; then
-        /usr/sbin/reboot
+        systemctl restart enigma2
+    elif command_exists init; then
+        init 4 && sleep 2 && init 3
     else
-        echo b > /proc/sysrq-trigger 2>/dev/null || killall -9 enigma2 2>/dev/null
+        killall -9 enigma2 2>/dev/null
     fi
 }
 
@@ -159,7 +155,7 @@ main() {
     echo "  ByArian"
     echo "=========================================="
 
-    reboot_device
+    restart_enigma2
 }
 
 main "$@"
