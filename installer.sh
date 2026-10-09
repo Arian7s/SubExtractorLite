@@ -139,7 +139,7 @@ main() {
     fi
 
     local KEY_PATH="/etc/enigma2/groqapi.key"
-    local BAK_KEY="/etc/enigma2/groqapi.key.bak"
+    local BAK_KEY="/tmp/groqapi.key.bak"
 
     if [ -f "$KEY_PATH" ] && [ -s "$KEY_PATH" ]; then
         echo "[+] Backing up existing groqapi.key..."
@@ -147,21 +147,23 @@ main() {
     fi
 
     echo "[+] Installing $IPK_NAME ..."
-    opkg install "$TMP_IPK"
+    opkg install --force-overwrite "$TMP_IPK"
 
     local INSTALL_STATUS=$?
     if [ $INSTALL_STATUS -ne 0 ]; then
         echo "[-] Installation failed with status $INSTALL_STATUS"
         rm -f "$TMP_IPK"
         if [ -f "$BAK_KEY" ]; then
-            mv "$BAK_KEY" "$KEY_PATH"
+            cp "$BAK_KEY" "$KEY_PATH"
+            rm -f "$BAK_KEY"
         fi
         exit 1
     fi
 
     if [ -f "$BAK_KEY" ]; then
         echo "[+] Restoring user's groqapi.key..."
-        mv "$BAK_KEY" "$KEY_PATH"
+        cp "$BAK_KEY" "$KEY_PATH"
+        rm -f "$BAK_KEY"
     fi
 
     rm -f "$TMP_IPK"
