@@ -139,7 +139,7 @@ main() {
     fi
 
     local KEY_PATH="/etc/enigma2/groqapi.key"
-    local BAK_KEY="/tmp/groqapi.key.bak"
+    local BAK_KEY="/etc/enigma2/groqapi.key.bak"
 
     if [ -f "$KEY_PATH" ] && [ -s "$KEY_PATH" ]; then
         echo "[+] Backing up existing groqapi.key..."
