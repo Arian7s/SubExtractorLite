@@ -147,7 +147,7 @@ main() {
     fi
 
     echo "[+] Installing $IPK_NAME ..."
-    opkg install --force-overwrite "$TMP_IPK"
+    opkg install --force-reinstall --force-overwrite --force-downgrade "$TMP_IPK"
 
     local INSTALL_STATUS=$?
     if [ $INSTALL_STATUS -ne 0 ]; then
